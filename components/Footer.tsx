@@ -1,13 +1,13 @@
 'use client'
 
-import { useRef } from 'react'
+import { FormEvent, useRef, useState } from 'react'
 
 const companyLinks: { label: string; href: string }[] = [
   { label: 'Our Work',  href: '/work' },
   { label: 'About Us',  href: '#why' },
   { label: 'Process',   href: '#process' },
-  { label: 'Careers',   href: 'mailto:careers@foldestudio.com' },
-  { label: 'Press Kit', href: 'mailto:press@foldestudio.com' },
+  { label: 'Careers',   href: 'mailto:careers@folde.work' },
+  { label: 'Media Assets', href: '/press' },
 ]
 
 const serviceLinks: { label: string }[] = [
@@ -19,24 +19,46 @@ const serviceLinks: { label: string }[] = [
   { label: 'eCommerce' },
 ]
 
+type SubscribeStatus = 'idle' | 'loading' | 'success' | 'error' | 'invalid'
+
 export default function Footer() {
   const inputRef = useRef<HTMLInputElement>(null)
-  const btnRef = useRef<HTMLButtonElement>(null)
+  const [status, setStatus] = useState<SubscribeStatus>('idle')
 
-  const handleSubscribe = () => {
+  const handleSubscribe = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     const input = inputRef.current
-    const btn = btnRef.current
-    if (!input || !btn) return
-    if (input.value && input.value.includes('@')) {
-      btn.textContent = 'Subscribed ✓'
-      input.value = ''
-      setTimeout(() => {
-        if (btn) btn.textContent = '→'
-      }, 3000)
-    } else {
-      input.style.borderColor = 'rgba(255,80,80,0.5)'
-      setTimeout(() => { if (input) input.style.borderColor = '' }, 1500)
+    if (!input || status === 'loading') return
+    const email = input.value.trim()
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setStatus('invalid')
+      setTimeout(() => setStatus('idle'), 2000)
+      return
     }
+
+    setStatus('loading')
+    try {
+      const form = event.currentTarget
+      const formData = new FormData(form)
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          website: formData.get('website'),
+        }),
+      })
+      if (res.ok) {
+        setStatus('success')
+        form.reset()
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
+    setTimeout(() => setStatus('idle'), 3000)
   }
 
   return (
@@ -104,31 +126,57 @@ export default function Footer() {
           <p className="footer-nl-desc">
             Design insights, studio news, and industry trends — delivered twice a month.
           </p>
-          <div className="footer-nl-form">
-            <div className="footer-nl-row">
+          <form className="footer-nl-form" onSubmit={handleSubscribe}>
+            <div className={`footer-nl-row${status === 'invalid' ? ' footer-nl-row--error' : ''}`}>
               <input
                 ref={inputRef}
                 className="footer-nl-input"
+                name="email"
                 type="email"
+                autoComplete="email"
+                maxLength={254}
                 placeholder="Write your email"
-                onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
+                aria-label="Email address"
+                required
               />
-              <button ref={btnRef} className="footer-nl-submit" onClick={handleSubscribe}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+              <button
+                type="submit"
+                className="footer-nl-submit"
+                disabled={status === 'loading'}
+                aria-label="Subscribe"
+              >
+                {status === 'success' ? (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8.5l3.5 3.5L13 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                ) : status === 'error' || status === 'invalid' ? (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                  </svg>
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
               </button>
             </div>
-          </div>
+            <div className="form-trap" aria-hidden="true">
+              <label htmlFor="newsletter-website">Website</label>
+              <input id="newsletter-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
+            {status === 'success' && <p className="footer-nl-status footer-nl-status--ok">Subscribed — thank you.</p>}
+            {status === 'invalid' && <p className="footer-nl-status footer-nl-status--err">Enter a valid email address.</p>}
+            {status === 'error' && <p className="footer-nl-status footer-nl-status--err">Something went wrong. Please try again.</p>}
+            <p className="footer-nl-consent">By subscribing, you agree to our <a href="/privacy">privacy policy</a>.</p>
+          </form>
         </div>
       </div>
 
       <div className="footer-bottom">
         <div className="footer-copy">© 2026 Folde Studio. All rights reserved.</div>
         <div className="footer-bottom-links">
-          <a href="mailto:legal@foldestudio.com">Privacy Policy</a>
-          <a href="mailto:legal@foldestudio.com">Terms of Service</a>
-          <a href="#" onClick={(e) => e.preventDefault()}>Cookie Settings</a>
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
         </div>
       </div>
 

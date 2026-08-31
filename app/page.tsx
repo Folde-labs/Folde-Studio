@@ -6,7 +6,7 @@ import Work from '@/components/Work'
 import Services from '@/components/Services'
 import Process from '@/components/Process'
 import Why from '@/components/Why'
-import Stats from '@/components/Stats'
+// import Stats from '@/components/Stats'
 import Blog from '@/components/Blog'
 import Cta from '@/components/Cta'
 import Footer from '@/components/Footer'
@@ -22,7 +22,7 @@ export default function Home() {
       <Services />
       <Process />
       <Why />
-      <Stats />
+      {/* <Stats /> */}
       <Blog />
       <Cta />
       <Footer />

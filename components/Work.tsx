@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 type Project = {
   id: string
@@ -172,10 +173,13 @@ function WorkItem({ p }: { p: Project }) {
       onMouseMove={handleMouseMove}
     >
       <div className={`work-card-bg ${p.bg}`}>
-        <img
+        <Image
           src={`/work${p.bg.replace('wk', '')}.${p.bg === 'wk1' || p.bg === 'wk4' ? 'png' : 'avif'}`}
           alt={p.client}
           className="work-card-img"
+          width={1400}
+          height={1000}
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
       </div>
 
@@ -239,12 +243,12 @@ export default function Work() {
           <span className="section-label">Selected Work</span>
           <h2 className="section-title">The work<br />comes first.</h2>
         </div>
-        <a href="/work" className="work-all-link">
+        <Link href="/work" className="work-all-link">
           View All Projects
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
             <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-        </a>
+        </Link>
       </div>
       <WorkGrid />
     </section>

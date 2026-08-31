@@ -17,13 +17,13 @@ export default function Cta() {
         </h2>
         <div className="cta-card-contacts">
           <a href="/contact" className="cta-contact-item cta-contact-btn">
-            Let's Talk
+            Let&apos;s Talk
             <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </a>
-          <a href="mailto:foldestudio@gmail.com" className="cta-contact-item">
-            foldestudio@gmail.com
+          <a href="mailto:hello@folde.work" className="cta-contact-item">
+            hello@folde.work
           </a>
         </div>
       </div>

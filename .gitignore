@@ -19,6 +19,13 @@
 *.pem
 *.mov
 
+# local source media (optimized web exports are committed separately)
+/public/Folde reel.mp4
+/public/Canann Images/
+/public/Tirra Images/
+/public/Annastacia_Abang.jpg
+/public/emmanuel_onyo.webp
+
 # debug
 npm-debug.log*
 yarn-debug.log*

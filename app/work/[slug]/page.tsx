@@ -2,6 +2,7 @@ import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import RevealObserver from '@/components/RevealObserver'
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { projects, ProjectData } from '@/lib/projects'
@@ -16,7 +17,18 @@ export async function generateMetadata(
   const { slug } = await params
   const p = projects[slug]
   if (!p) return {}
-  return { title: `${p.client} — Folde Studio`, description: p.tagline }
+  return {
+    title: p.client,
+    description: p.tagline,
+    alternates: { canonical: `/work/${slug}` },
+    openGraph: {
+      type: 'article',
+      url: `/work/${slug}`,
+      title: `${p.client} — Folde Studio`,
+      description: p.tagline,
+      images: [{ url: p.heroImage ?? workImg(p.bgClass), alt: `${p.client} case study` }],
+    },
+  }
 }
 
 function workImg(bgClass: string) {
@@ -30,12 +42,20 @@ function galleryImgs(bgClass: string): [string, string, string] {
   return [workImg(others[0]), workImg(others[1]), workImg(others[2])]
 }
 
+function heroImg(p: ProjectData) {
+  return p.heroImage ?? workImg(p.bgClass)
+}
+
+function sectionImgs(p: ProjectData): [string, string, string] {
+  return p.sectionImages ?? galleryImgs(p.bgClass)
+}
+
 /* ─────────────────────────────────────────────────────────
    Layout A — Editorial sidebar (01 Wowzi, 03 Formii)
    Left thin sidebar + right wide content, all white
 ───────────────────────────────────────────────────────── */
 function LayoutA({ p, next }: { p: ProjectData; next: ProjectData | undefined }) {
-  const [img1, img2, img3] = galleryImgs(p.bgClass)
+  const [img1, img2, img3] = sectionImgs(p)
   return (
     <>
       <Nav />
@@ -51,7 +71,7 @@ function LayoutA({ p, next }: { p: ProjectData; next: ProjectData | undefined })
 
       {/* FULL-WIDTH hero image — no sidebar beside it */}
       <div className="csa-hero-img">
-        <img src={workImg(p.bgClass)} alt={p.client} />
+        <Image src={heroImg(p)} alt={p.client} width={1800} height={1100} sizes="100vw" priority />
       </div>
 
       {/* BELOW HERO: narrow sidebar + wide content */}
@@ -84,8 +104,8 @@ function LayoutA({ p, next }: { p: ProjectData; next: ProjectData | undefined })
           </section>
 
           <div className="csa-img-2col">
-            <div className="csa-img-cell"><img src={img1} alt={p.client} /></div>
-            <div className="csa-img-cell"><img src={img2} alt={p.client} /></div>
+            <div className="csa-img-cell"><Image src={img1} alt={p.client} width={1000} height={800} sizes="(max-width: 768px) 100vw, 50vw" /></div>
+            <div className="csa-img-cell"><Image src={img2} alt={p.client} width={1000} height={800} sizes="(max-width: 768px) 100vw, 50vw" /></div>
           </div>
 
           <section className="csa-sect">
@@ -97,7 +117,7 @@ function LayoutA({ p, next }: { p: ProjectData; next: ProjectData | undefined })
           </section>
 
           <div className="csa-img-wide">
-            <img src={img3} alt={p.client} />
+            <Image src={img3} alt={p.client} width={1800} height={1000} sizes="100vw" />
           </div>
 
           <section className="csa-sect">
@@ -115,34 +135,34 @@ function LayoutA({ p, next }: { p: ProjectData; next: ProjectData | undefined })
           {p.gallery.length > 0 && (
             <div className="csa-img-3col">
               {p.gallery.slice(0, 3).map((src) => (
-                <div key={src} className="csa-img-cell"><img src={src} alt={p.client} /></div>
+                <div key={src} className="csa-img-cell"><Image src={src} alt={p.client} width={900} height={700} sizes="(max-width: 768px) 100vw, 33vw" /></div>
               ))}
             </div>
           )}
 
           {p.gallery.length > 3 && (
             <div className="csa-img-wide">
-              <img src={p.gallery[3]} alt={p.client} />
+              <Image src={p.gallery[3]} alt={p.client} width={1800} height={1000} sizes="100vw" />
             </div>
           )}
 
           {p.gallery.length > 4 && (
             <div className="csa-img-2col">
               {p.gallery.slice(4, 6).map((src) => (
-                <div key={src} className="csa-img-cell"><img src={src} alt={p.client} /></div>
+                <div key={src} className="csa-img-cell"><Image src={src} alt={p.client} width={1000} height={800} sizes="(max-width: 768px) 100vw, 50vw" /></div>
               ))}
             </div>
           )}
 
           {p.gallery.length > 6 && (
             <div className="csa-img-wide">
-              <img src={p.gallery[6]} alt={p.client} />
+              <Image src={p.gallery[6]} alt={p.client} width={1800} height={1000} sizes="100vw" />
             </div>
           )}
 
           {p.gallery.length > 7 && (
             <div className="csa-img-wide">
-              <img src={p.gallery[7]} alt={p.client} />
+              <Image src={p.gallery[7]} alt={p.client} width={1800} height={1000} sizes="100vw" />
             </div>
           )}
 
@@ -187,7 +207,7 @@ function LayoutA({ p, next }: { p: ProjectData; next: ProjectData | undefined })
    Big title → full hero image → sidebar + content → gallery
 ───────────────────────────────────────────────────────── */
 function LayoutB({ p, next }: { p: ProjectData; next: ProjectData | undefined }) {
-  const [img1, img2, img3] = galleryImgs(p.bgClass)
+  const [img1, img2, img3] = sectionImgs(p)
   return (
     <>
       <Nav />
@@ -200,7 +220,7 @@ function LayoutB({ p, next }: { p: ProjectData; next: ProjectData | undefined })
       </div>
 
       <div className="csb-hero-img">
-        <img src={workImg(p.bgClass)} alt={p.client} />
+        <Image src={heroImg(p)} alt={p.client} width={1800} height={1100} sizes="100vw" priority />
       </div>
 
       <div className="csb-body">
@@ -245,9 +265,9 @@ function LayoutB({ p, next }: { p: ProjectData; next: ProjectData | undefined })
 
       {/* 3-col gallery */}
       <div className="csb-gallery">
-        <div className="csb-gallery-cell"><img src={img1} alt={p.client} /></div>
-        <div className="csb-gallery-cell"><img src={img2} alt={p.client} /></div>
-        <div className="csb-gallery-cell"><img src={img3} alt={p.client} /></div>
+        <div className="csb-gallery-cell"><Image src={img1} alt={p.client} width={900} height={700} sizes="(max-width: 768px) 100vw, 33vw" /></div>
+        <div className="csb-gallery-cell"><Image src={img2} alt={p.client} width={900} height={700} sizes="(max-width: 768px) 100vw, 33vw" /></div>
+        <div className="csb-gallery-cell"><Image src={img3} alt={p.client} width={900} height={700} sizes="(max-width: 768px) 100vw, 33vw" /></div>
       </div>
 
       {/* Outcome */}

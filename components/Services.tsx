@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 const services = [
   {
     num: '01',
@@ -62,7 +64,7 @@ export default function Services() {
               ))}
             </ul>
             <div className="svc-row-img">
-              <img src={s.img} alt={s.title} />
+              <Image src={s.img} alt={s.title} width={900} height={650} sizes="(max-width: 768px) 100vw, 40vw" />
             </div>
           </div>
         ))}

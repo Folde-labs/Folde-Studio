@@ -6,8 +6,9 @@ import Cta from '@/components/Cta'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Our Work — Folde Studio',
+  title: 'Our Work',
   description: 'Selected work from Folde Studio — brand identity, campaign production, product design, and eCommerce growth.',
+  alternates: { canonical: '/work' },
 }
 
 export default function WorkPage() {

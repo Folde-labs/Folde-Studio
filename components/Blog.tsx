@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 const DiagArrow = () => (
   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
     <path d="M4 14L14 4M14 4H8M14 4v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -11,6 +13,7 @@ const posts = [
     title: 'CREATIVITY AND BRAND CONSISTENCY',
     excerpt:
       'Modern design systems reshape brand through consistent, scalable, and efficient across every digital and physical touchpoint.',
+    href: '#',
   },
   {
     bg: '/blog2.avif',
@@ -18,6 +21,7 @@ const posts = [
     title: 'THE EVOLUTION OF MICRO INTERACTIONS',
     excerpt:
       'Small animations create big impact — subtle movements guide attention, enhance clarity, and shape a smoother, more intuitive user experience.',
+    href: '#',
   },
 ]
 
@@ -53,9 +57,15 @@ export default function Blog() {
 
       <div className="blog-duo">
         {posts.map((post, i) => (
-          <a href="#" key={post.title} className={`blog-duo-card reveal${i > 0 ? ' reveal-delay-1' : ''}`}>
+          <a
+            href={post.href}
+            key={post.title}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`blog-duo-card reveal${i > 0 ? ' reveal-delay-1' : ''}`}
+          >
             <div className="blog-duo-img">
-              <img src={post.bg} alt={post.title} className="blog-img-bg" />
+              <Image src={post.bg} alt={post.title} className="blog-img-bg" width={900} height={650} sizes="(max-width: 768px) 100vw, 50vw" />
               <span className="blog-cat-pill">{post.category}</span>
             </div>
             <div className="blog-duo-body">

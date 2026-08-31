@@ -24,6 +24,8 @@ export type ProjectData = {
   gallerySvgs: [React.ReactNode, React.ReactNode, React.ReactNode]
   videoCaption: string
   gallery: string[]
+  heroImage?: string
+  sectionImages?: [string, string, string]
 }
 
 export const projects: Record<string, ProjectData> = {
@@ -177,6 +179,8 @@ export const projects: Record<string, ProjectData> = {
     bgClass: 'wk2',
     videoCaption: 'Product walkthrough — trust-first rebrand across iOS, Android, and web, 2025',
     gallery: [],
+    heroImage: '/tirra-hero.jpg',
+    sectionImages: ['/tirra-app-dark-1.jpg', '/tirra-app-dark-2.jpg', '/tirra-lifestyle.jpg'],
     heroSvg: (
       <svg width="260" height="260" viewBox="0 0 260 260" fill="none">
         <polygon points="130,10 250,230 10,230" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" fill="none" />
@@ -260,11 +264,11 @@ export const projects: Record<string, ProjectData> = {
     bgClass: 'wk3',
     videoCaption: 'Platform walkthrough — cause pages, donation flow, and impact system, 2026',
     gallery: [
-      '/canann-1.jpg',
-      '/canann-2.jpg',
-      '/canann-3.jpg',
-      '/canann-4.jpg',
+      '/canann-platform.jpg',
+      '/canann-advocacy.jpg',
     ],
+    heroImage: '/canann-hero.jpg',
+    sectionImages: ['/canann-community.jpg', '/canann-recognition.jpg', '/canann-classroom.jpg'],
     heroSvg: (
       <svg width="260" height="260" viewBox="0 0 260 260" fill="none">
         <rect x="20" y="40" width="220" height="24" rx="12" fill="rgba(255,255,255,0.9)" />

@@ -28,7 +28,18 @@ export default function Loader() {
       }
     }
     rafRef.current = requestAnimationFrame(animate)
-    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }
+
+    // Safety net: never let the loader block the site if the rAF loop stalls
+    const failsafe = setTimeout(() => {
+      setProgress(100)
+      setExiting(true)
+      setTimeout(() => setGone(true), 800)
+    }, duration + 2000)
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      clearTimeout(failsafe)
+    }
   }, [])
 
   if (gone) return null
