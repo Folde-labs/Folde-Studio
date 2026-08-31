@@ -1,0 +1,12 @@
+.git/
+.next/
+node_modules/
+.env*
+!.env.example
+
+# Local source media. Optimized web exports are deployed separately.
+public/Folde reel.mp4
+public/Canann Images/
+public/Tirra Images/
+public/Annastacia_Abang.jpg
+public/emmanuel_onyo.webp
