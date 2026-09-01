@@ -95,7 +95,7 @@ export default function Footer() {
             </div>
             <div>
               <dt>New business</dt>
-              <dd>Open for Q4 2026</dd>
+              <dd>Open for Business</dd>
             </div>
           </dl>
           <a className="footer-contact-cta" href="/contact">
