@@ -94,7 +94,7 @@ export default function Footer() {
               <dd>Within 48 hours</dd>
             </div>
             <div>
-              <dt>New business</dt>
+              <dt>Availability</dt>
               <dd>Open for Business</dd>
             </div>
           </dl>
