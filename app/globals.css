@@ -320,9 +320,8 @@ nav.scrolled {
 
 /* ─── HERO ─── */
 #hero {
-  min-height: 80svh;
   background: var(--bg);
-  padding: 172px 64px 80px;
+  padding: clamp(128px, 12vw, 172px) 64px clamp(56px, 5vw, 80px);
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--border);
@@ -336,18 +335,19 @@ nav.scrolled {
   line-height: 0.88;
   letter-spacing: -0.04em;
   color: var(--black);
-  margin-bottom: clamp(40px, 3vw, 72px);
+  margin-bottom: clamp(32px, 3.5vw, 64px);
 }
 .hero-bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 48px;
-  margin-top: auto;
+  flex-wrap: wrap;
   padding-left: 160px;
   padding-right: 200px;
 }
 .hero-bottom-left {
+  flex: 1 1 340px;
   max-width: 480px;
 }
 .hero-bottom-right {
@@ -1477,76 +1477,60 @@ footer {
   transition: color 0.2s;
 }
 .footer-links a:hover { color: var(--white); }
-.footer-nl-title {
-  font-size: 11px;
-  font-weight: 600;
+.footer-contact-desc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 20px;
+  max-width: 300px;
+}
+.footer-contact-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-head), sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+  padding-bottom: 4px;
+  transition: gap 0.2s var(--ease), border-color 0.2s;
+}
+.footer-contact-email:hover { gap: 11px; border-color: var(--white); }
+.footer-contact-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  margin: 24px 0;
+}
+.footer-contact-meta dt {
+  font-size: 10px;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.3);
-  margin-bottom: 12px;
+  margin-bottom: 5px;
 }
-.footer-nl-desc {
-  color: rgba(255,255,255,0.4);
+.footer-contact-meta dd {
   font-size: 13px;
-  line-height: 1.65;
-  margin-bottom: 20px;
+  color: rgba(255,255,255,0.62);
 }
-.footer-nl-form { display: flex; flex-direction: column; gap: 8px; }
-.footer-nl-input {
-  background: transparent;
-  border: 1px solid var(--border-dark);
-  border-radius: 0;
-  padding: 11px 14px;
-  color: var(--white);
-  font-family: var(--font-head), sans-serif;
-  font-size: 13px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-.footer-nl-input::placeholder { color: rgba(255,255,255,0.25); }
-.footer-nl-input:focus { border-color: rgba(255,255,255,0.3); }
-.footer-nl-row {
-  display: flex;
+.footer-contact-cta {
+  display: inline-flex;
   align-items: center;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--border-dark);
-  border-radius: 100px;
-  padding: 6px 6px 6px 16px;
   gap: 8px;
+  background: var(--white);
+  color: var(--bg-dark);
+  border-radius: 100px;
+  padding: 13px 22px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: gap 0.2s var(--ease), opacity 0.2s;
 }
-.footer-nl-input {
-  background: transparent;
-  border: none;
-  padding: 6px 0;
-  color: var(--white);
-  font-family: var(--font-body), sans-serif;
-  font-size: 13px;
-  outline: none;
-  flex: 1;
-  min-width: 0;
-}
-.footer-nl-input::placeholder { color: rgba(255,255,255,0.25); }
-.footer-nl-submit {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: var(--accent-from);
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--white);
-  flex-shrink: 0;
-  transition: opacity 0.2s;
-}
-.footer-nl-submit:hover { opacity: 0.85; }
-.footer-nl-submit:disabled { opacity: 0.5; cursor: default; }
-.footer-nl-row--error { border-color: rgba(255,80,80,0.5); }
-.footer-nl-status { font-size: 12px; padding: 2px 4px; }
-.footer-nl-status--ok { color: rgba(255,255,255,0.55); }
-.footer-nl-status--err { color: rgba(255,110,110,0.85); }
-.footer-nl-consent { color: rgba(255,255,255,0.28); font-size: 10px; line-height: 1.5; }
-.footer-nl-consent a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.footer-contact-cta:hover { gap: 12px; opacity: 0.88; }
 .form-trap { position: absolute !important; left: -10000px !important; width: 1px; height: 1px; overflow: hidden; }
 .footer-bottom {
   padding: 24px 68px;
@@ -2905,7 +2889,7 @@ footer {
 /* ─── RESPONSIVE ─── */
 @media (max-width: 1200px) {
   nav { padding: 24px 40px; }
-  #hero { padding: 18.75vw 40px 72px; }
+  #hero { padding-left: 40px; padding-right: 40px; }
   .hero-scroll-vertical { right: 40px; }
   .work-header { padding: 64px 40px 48px; }
   .svc-header { padding: 64px 40px 48px; }
@@ -2925,7 +2909,40 @@ footer {
   .footer-wordmark { padding: 0 40px 8px; }
 }
 
+@media (max-width: 1180px) {
+  /* Hero — release the deep inner indent that was crushing the copy column */
+  .hero-bottom {
+    padding-left: 72px;
+    padding-right: 72px;
+    gap: 40px;
+  }
+
+  /* Why — headline and subtitle stop competing for the same row */
+  .why-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 72px 40px 48px;
+  }
+  .why-subtitle { max-width: 560px; }
+
+  /* Why cards — video becomes a banner, quotes sit side by side beneath it */
+  .why-cards {
+    grid-template-columns: 1fr 1fr;
+    padding: 0 40px 72px;
+  }
+  .why-card-video {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 9;
+  }
+}
+
 @media (max-width: 1024px) {
+  .hero-bottom { padding-left: 0; padding-right: 0; }
+  /* Collides with the hero image once the columns close up */
+  .hero-scroll-vertical { display: none; }
+  .why-card-quote { padding: 28px; }
+  .why-quote { font-size: 16px; }
   .awards-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-top { grid-template-columns: 1fr 1fr; }
 }
@@ -3623,7 +3640,9 @@ footer {
   padding: 8px;
   border-radius: 100px;
   background: var(--accent-from);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.08);
+  /* Thin ring keeps the pill legible where it overlaps the orange footer wordmark */
+  box-shadow: 0 12px 32px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.08),
+              inset 0 0 0 1px rgba(255,255,255,0.22);
 }
 .nav-dock-home {
   display: flex;

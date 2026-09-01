@@ -1,7 +1,3 @@
-'use client'
-
-import { FormEvent, useRef, useState } from 'react'
-
 const companyLinks: { label: string; href: string }[] = [
   { label: 'Our Work',  href: '/work' },
   { label: 'About Us',  href: '#why' },
@@ -19,48 +15,7 @@ const serviceLinks: { label: string }[] = [
   { label: 'eCommerce' },
 ]
 
-type SubscribeStatus = 'idle' | 'loading' | 'success' | 'error' | 'invalid'
-
 export default function Footer() {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [status, setStatus] = useState<SubscribeStatus>('idle')
-
-  const handleSubscribe = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const input = inputRef.current
-    if (!input || status === 'loading') return
-    const email = input.value.trim()
-
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setStatus('invalid')
-      setTimeout(() => setStatus('idle'), 2000)
-      return
-    }
-
-    setStatus('loading')
-    try {
-      const form = event.currentTarget
-      const formData = new FormData(form)
-      const res = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          website: formData.get('website'),
-        }),
-      })
-      if (res.ok) {
-        setStatus('success')
-        form.reset()
-      } else {
-        setStatus('error')
-      }
-    } catch {
-      setStatus('error')
-    }
-    setTimeout(() => setStatus('idle'), 3000)
-  }
-
   return (
     <footer>
       <div className="footer-top">
@@ -122,53 +77,33 @@ export default function Footer() {
         </div>
 
         <div>
-          <div className="footer-nl-title">Stay in the loop</div>
-          <p className="footer-nl-desc">
-            Design insights, studio news, and industry trends — delivered twice a month.
+          <div className="footer-col-title">Get in touch</div>
+          <p className="footer-contact-desc">
+            Have a project in mind? Tell us what you&apos;re building and we&apos;ll come back to
+            you with next steps.
           </p>
-          <form className="footer-nl-form" onSubmit={handleSubscribe}>
-            <div className={`footer-nl-row${status === 'invalid' ? ' footer-nl-row--error' : ''}`}>
-              <input
-                ref={inputRef}
-                className="footer-nl-input"
-                name="email"
-                type="email"
-                autoComplete="email"
-                maxLength={254}
-                placeholder="Write your email"
-                aria-label="Email address"
-                required
-              />
-              <button
-                type="submit"
-                className="footer-nl-submit"
-                disabled={status === 'loading'}
-                aria-label="Subscribe"
-              >
-                {status === 'success' ? (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8.5l3.5 3.5L13 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                ) : status === 'error' || status === 'invalid' ? (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                  </svg>
-                ) : (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
-              </button>
+          <a className="footer-contact-email" href="mailto:hello@folde.work">
+            hello@folde.work
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
+          <dl className="footer-contact-meta">
+            <div>
+              <dt>Response time</dt>
+              <dd>Within 48 hours</dd>
             </div>
-            <div className="form-trap" aria-hidden="true">
-              <label htmlFor="newsletter-website">Website</label>
-              <input id="newsletter-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+            <div>
+              <dt>Availability</dt>
+              <dd>Open for Business</dd>
             </div>
-            {status === 'success' && <p className="footer-nl-status footer-nl-status--ok">Subscribed — thank you.</p>}
-            {status === 'invalid' && <p className="footer-nl-status footer-nl-status--err">Enter a valid email address.</p>}
-            {status === 'error' && <p className="footer-nl-status footer-nl-status--err">Something went wrong. Please try again.</p>}
-            <p className="footer-nl-consent">By subscribing, you agree to our <a href="/privacy">privacy policy</a>.</p>
-          </form>
+          </dl>
+          <a className="footer-contact-cta" href="/contact">
+            Start a project
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
         </div>
       </div>
 
